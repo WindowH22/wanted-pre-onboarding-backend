@@ -1,18 +1,19 @@
 package com.windowh22.wantedpreonboardingbackend.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
 
 @Builder
+@Getter
 @Entity
 public class User {
     @Id
     @Column(nullable = false, unique = true)
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Setter
     @Column(nullable = false)
     private String password;
@@ -23,8 +24,8 @@ public class User {
     protected User() {
     }
 
-    private User(String userId, String password, String email) {
-        this.userId = userId;
+    private User(Long id, String password, String email) {
+        this.id = id;
         this.password = password;
         this.email = email;
     }
