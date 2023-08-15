@@ -105,7 +105,12 @@ public class Response {
     }
 
     public ResponseEntity<Body> success(String msg, HttpStatus status) {
-        return success(msg, status);
+        Body body = Body.builder()
+                .state(status.value())
+                .result("success")
+                .message(msg)
+                .build();
+        return new ResponseEntity<>(body, status);
     }
 
 
