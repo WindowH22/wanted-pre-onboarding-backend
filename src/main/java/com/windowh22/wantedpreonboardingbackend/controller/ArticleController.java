@@ -10,34 +10,34 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping("/api/articles")
+@RequestMapping("/api/article")
 @RestController
 public class ArticleController {
 
     private final ArticleService articleService;
 
     @GetMapping
-    public ResponseEntity<Response.Body> getArticle(@RequestParam Long articleId){
+    public ResponseEntity<Response.Body> getArticle(@RequestParam Long articleId) {
         return articleService.getArticle(articleId);
     }
 
-    @GetMapping
-    public ResponseEntity<Response.Body> getArticle(Pageable pageable){
+    @GetMapping("/articles")
+    public ResponseEntity<Response.Body> getArticle(Pageable pageable) {
         return articleService.getArticles(pageable);
     }
 
     @PostMapping
-    public ResponseEntity<Response.Body> saveArticle(ArticleRequestDto.saveDto saveDto){
+    public ResponseEntity<Response.Body> saveArticle(@RequestBody ArticleRequestDto saveDto) {
         return articleService.saveArticle(saveDto);
     }
 
     @PutMapping
-    public ResponseEntity<Response.Body> updateArticle(@RequestParam Long articleId,ArticleRequestDto updateDto){
-        return articleService.updateArticle(articleId,updateDto);
+    public ResponseEntity<Response.Body> updateArticle(@RequestParam Long articleId, @RequestBody ArticleRequestDto updateDto) {
+        return articleService.updateArticle(articleId, updateDto);
     }
 
     @DeleteMapping
-    public ResponseEntity<Response.Body> deleteArticle(@RequestParam Long articleId){
+    public ResponseEntity<Response.Body> deleteArticle(@RequestParam Long articleId) {
         return articleService.deleteArticle(articleId);
     }
 }

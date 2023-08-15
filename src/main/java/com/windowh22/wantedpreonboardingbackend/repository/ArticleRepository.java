@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-    Optional<Article> findByIdAndUser(Long articleId, User user);
+    Optional<Article> findByIdAndUser(Long id, User user);
 }
