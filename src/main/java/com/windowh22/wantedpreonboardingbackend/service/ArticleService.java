@@ -31,11 +31,20 @@ public class ArticleService {
 
     // 게시글 작성
     public ResponseEntity<Response.Body> saveArticle(ArticleRequestDto dto){
-        User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
-        Article article = dto.toArticle(user);
-        articleRepository.save(article);
+        try{
+            User user = userRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
+            Article article = dto.toArticle(user);
+            articleRepository.save(article);
 
-        return response.success("게시글 작성이 완료되었습니다.");
+            return response.success("게시글 작성이 완료되었습니다.");
+        }
+        catch (EntityNotFoundException e){
+            return response.fail(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return response.fail("알 수 없는 오류가 발생했습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
     // 게시글 수정
     public ResponseEntity<Response.Body> updateArticle(Long articleId,ArticleRequestDto dto){
@@ -51,7 +60,7 @@ public class ArticleService {
             article.setContent(dto.getContent());
 
             articleRepository.save(article);
-            return response.success("게시글 수정 완료");
+            return response.success(ArticleResponseDto.toDto(article),"게시글 수정 완료",HttpStatus.OK);
         }catch (EntityNotFoundException e){
             return response.fail(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
