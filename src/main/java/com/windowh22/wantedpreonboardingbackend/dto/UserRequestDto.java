@@ -40,6 +40,7 @@ public class UserRequestDto {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class LoginDto {
         private String email;
         private String password;
