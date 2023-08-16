@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     Optional<Article> findByIdAndUser(Long id, User user);
+
+    Optional<Article> findByTitle(String title);
 }
