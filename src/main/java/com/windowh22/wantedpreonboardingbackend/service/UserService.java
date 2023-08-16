@@ -44,7 +44,6 @@ public class UserService {
             if(userRepository.findByEmail(dto.getEmail()).isPresent()){
                 throw new EntityExistsException("이미 존재하는 회원입니다.");
             }
-
             User user = dto.toUser(passwordEncoder);
             userRepository.save(user);
             System.out.println("회원가입 완료");
@@ -92,15 +91,21 @@ public class UserService {
 
 
     //회원가입시, 유효성 체크
-    public Map<String, String> validateHandling(Errors errors) {
-        Map<String, String> validatorResult = new HashMap<>();
+    public ResponseEntity<Response.Body> validateHandling(UserRequestDto.signUpDto dto) {
+        System.out.println("유효성 검사 로직 동작");
+        System.out.println("이메일 " + dto.getEmail());
+        System.out.println("비밀번호 " + dto.getPassword());
 
-        for (FieldError error : errors.getFieldErrors()) {
-            String validKeyName = String.format("valid_%s", error.getField());
-            validatorResult.put(validKeyName, error.getDefaultMessage());
-        }
+            if(!dto.getEmail().contains("@")){
+                throw new RuntimeException("@를 포함한 이메일이어야 합니다.");
+            }
 
-        return validatorResult;
+            if(dto.getPassword().length() < 8){
+                throw new RuntimeException("비밀번호는 8글자 이상이어야 합니다.");
+            }
+
+        return response.success("검증 통과");
+
     }
 
 }
