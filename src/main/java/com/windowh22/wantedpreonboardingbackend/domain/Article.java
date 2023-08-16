@@ -16,7 +16,7 @@ public class Article extends AuditingFields {
 
     // setter를 따로 주는 이유는 자동으로 주는 값에 대해 인위적인 변경을 막기위함
     @Setter
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String title; // 제목
     @Setter
     @JoinColumn(name = "userId")
